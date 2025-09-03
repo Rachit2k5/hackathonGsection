@@ -1,1 +1,108 @@
+import React, { useState, useEffect } from 'react';
+
+const CivicReportForm = () => {
+  const [photoFile, setPhotoFile] = useState(null);
+  const [voiceDescription, setVoiceDescription] = useState('');
+  const [isRecording, setIsRecording] = useState(false);
+  const [location, setLocation] = useState(null);
+  const [message, setMessage] = useState('');
+  const [recognition, setRecognition] = useState(null);
+
+  // Setup Web Speech API
+  useEffect(() => {
+    if (!('webkitSpeechRecognition' in window || 'SpeechRecognition' in window)) {
+      alert('Speech recognition not supported in your browser');
+      return;
+    }
+    const SpeechRecognition = window.SpeechRecognition || window.webkitSpeechRecognition;
+    const recog = new SpeechRecognition();
+    recog.continuous = false;
+    recog.interimResults = false;
+    recog.lang = 'en-US';
+
+    recog.onresult = (event) => {
+      const text = event.results[0][0].transcript;
+      setVoiceDescription(text);
+      setIsRecording(false);
+    };
+
+    recog.onerror = () => setIsRecording(false);
+    setRecognition(recog);
+  }, []);
+
+  // Get user location
+  const getLocation = () => {
+    if (!navigator.geolocation) {
+      alert('Geolocation not supported');
+      return;
+    }
+    navigator.geolocation.getCurrentPosition(
+      (pos) => setLocation({
+        latitude: pos.coords.latitude,
+        longitude: pos.coords.longitude,
+      }),
+      () => alert('Unable to retrieve location.')
+    );
+  };
+
+  // Start recording voice
+  const startRecording = () => {
+    if (recognition) {
+      setIsRecording(true);
+      recognition.start();
+    }
+  };
+
+  // Handle form submission
+  const handleSubmit = async (e) => {
+    e.preventDefault();
+    if (!photoFile) {
+      setMessage('Please select a photo');
+      return;
+    }
+    if (!location) {
+      setMessage('Location required. Please allow location access.');
+      return;
+    }
+
+    const formData = new FormData();
+    formData.append('photo', photoFile);
+    formData.append('voiceDescription', voiceDescription);
+    formData.append('location', JSON.stringify(location));
+
+    const res = await fetch('/api/upload', { method: 'POST', body: formData });
+    const data = await res.json();
+
+    if (res.ok) {
+      setMessage(`Detected issue: ${data.issue}\nVoice note: ${data.voiceDescription}\nLocation: ${JSON.stringify(data.location)}`);
+    } else {
+      setMessage(`Error: ${data.error || 'Unknown error'}`);
+    }
+  };
+
+  return (
+    <div>
+      <h2>Report Civic Issue</h2>
+
+      <form onSubmit={handleSubmit}>
+        <input type="file" accept="image/*" onChange={e => setPhotoFile(e.target.files[0])} required />
+        <br />
+
+        <button type="button" onClick={startRecording} disabled={isRecording}>
+          {isRecording ? 'Recording…' : 'Record Voice Description'}
+        </button>
+        <p>Voice Text: {voiceDescription}</p>
+
+        <button type="button" onClick={getLocation}>Get Location</button>
+        <p>Location: {location ? `${location.latitude}, ${location.longitude}` : 'Not set'}</p>
+
+        <button type="submit">Submit Report</button>
+      </form>
+
+      <div style={{whiteSpace: 'pre-wrap', marginTop: '20px'}}>{message}</div>
+    </div>
+  );
+};
+
+export default CivicReportForm;
 
