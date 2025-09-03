@@ -8,24 +8,31 @@
 </head>
 <body>
     <!-- Header Navigation -->
-    <header class="header">
-        <nav class="nav container" role="navigation" aria-label="Main Navigation">
-            <div class="nav__brand">
-                <h1>Civic Reporter</h1>
-            </div>
-            <ul class="nav__menu">
-                <li><a href="#home" class="nav__link active" data-nav="home" role="link" tabindex="0">Home</a></li>
-                <li><a href="#report" class="nav__link" data-nav="report" role="link" tabindex="0">Report Issue</a></li>
-                <li><a href="#my-reports" class="nav__link" data-nav="my-reports" role="link" tabindex="0">My Reports</a></li>
-                <li><a href="#admin" class="nav__link" data-nav="admin" role="link" tabindex="0">Admin Dashboard</a></li>
-            </ul>
-            <button class="nav__toggle" aria-label="Toggle navigation menu" aria-haspopup="true" aria-expanded="false">
-                <span></span>
-                <span></span>
-                <span></span>
-            </button>
-        </nav>
-    </header>
+<header class="header">
+    <nav class="nav container" role="navigation" aria-label="Main Navigation">
+        <div class="nav__brand">
+            <h1 data-i18n="Civic Reporter">Civic Reporter</h1>
+        </div>
+        <ul class="nav__menu">
+            <li><a href="#home" class="nav__link active" data-nav="home" role="link" tabindex="0" data-i18n="Home">Home</a></li>
+            <li><a href="#report" class="nav__link" data-nav="report" role="link" tabindex="0" data-i18n="Report Issue">Report Issue</a></li>
+            <li><a href="#my-reports" class="nav__link" data-nav="my-reports" role="link" tabindex="0" data-i18n="My Reports">My Reports</a></li>
+            <li><a href="#admin" class="nav__link" data-nav="admin" role="link" tabindex="0" data-i18n="Admin Dashboard">Admin Dashboard</a></li>
+            <li class="nav__lang">
+                <select id="language-select" aria-label="Select Language">
+                    <option value="en">English</option>
+                    <option value="hi">हिन्दी</option>
+                </select>
+            </li>
+        </ul>
+        <button class="nav__toggle" aria-label="Toggle navigation menu" aria-haspopup="true" aria-expanded="false">
+            <span></span>
+            <span></span>
+            <span></span>
+        </button>
+    </nav>
+</header>
+
 
     <main class="main" role="main">
         <!-- Home Section -->
