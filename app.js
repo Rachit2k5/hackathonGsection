@@ -1,3 +1,47 @@
+const translations = {
+  hi: {
+    'Civic Reporter': 'सिविक रिपोर्टर',
+    'Home': 'होम',
+    'Report Issue': 'समस्या रिपोर्ट करें',
+    'My Reports': 'मेरी रिपोर्ट्स',
+    'Admin Dashboard': 'प्रशासनिक डैशबोर्ड',
+    'Civic Issue Reporting System': 'सिविक समस्या रिपोर्टिंग सिस्टम',
+    'Report an Issue': 'समस्या दर्ज करें',
+    'View Reports': 'रिपोर्ट्स देखें',
+    'Total Issues': 'कुल समस्याएँ',
+    'Resolved': 'सुलझाई गई',
+    'Pending': 'लंबित',
+    'In Progress': 'प्रगति में',
+    'Issue Title *': 'समस्या का शीर्षक *',
+    'Category *': 'श्रेणी *',
+    'Priority *': 'प्राथमिकता *',
+    'Location *': 'स्थान *',
+    'Description *': 'विवरण *',
+    'Upload Photo': 'फोटो अपलोड करें',
+    'Submit Issue Report': 'समस्या रिपोर्ट सबमिट करें',
+    'Track the status of your submitted issues.': 'अपनी सबमिट की गई समस्याओं की स्थिति ट्रैक करें।',
+    'All Status': 'सभी स्थितियाँ',
+    'All Categories': 'सभी श्रेणियाँ',
+    'No reports found': 'कोई रिपोर्ट नहीं मिली',
+    'You haven\'t reported any issues yet or no issues match your search criteria.': 'आपने अभी तक कोई समस्या रिपोर्ट नहीं की है या कोई मेल नहीं खा रही।',
+    'Admin Dashboard': 'प्रशासनिक डैशबोर्ड',
+    'Manage and update reported issues.': 'रिपोर्ट की गई समस्याओं का प्रबंधन और अद्यतन करें।',
+    'Total Reports': 'कुल रिपोर्ट्स',
+    'Submitted': 'सबमिट की गई',
+    'Issue Details': 'समस्या का विवरण',
+    'Close modal': 'मोडल बंद करें',
+    'Close message': 'संदेश बंद करें'
+    // Add more translations as needed
+  }
+};
+
+function setLanguage(lang = 'en') {
+  document.querySelectorAll('[data-i18n]').forEach(node => {
+    const key = node.getAttribute('data-i18n');
+    node.textContent = (lang === 'hi' ? translations.hi[key] || key : key);
+  });
+}
+
 // Civic Issue Reporting System JavaScript
 
 class CivicReporter {
@@ -620,4 +664,13 @@ class CivicReporter {
 // Initialize the application when DOM is loaded
 document.addEventListener('DOMContentLoaded', () => {
     new CivicReporter();
+    const langSelect = document.getElementById("language-select");
+if (langSelect) {
+  langSelect.addEventListener("change", function() {
+    setLanguage(this.value);
+  });
+  // Set initial language on load
+  setLanguage(langSelect.value);
+}
+
 });
